@@ -1,4 +1,4 @@
-# AGENTS.md — guía operativa para agentes (GYM MVP)
+# AGENTS.md — guía operativa para agentes (gym-app)
 
 Este archivo es la fuente de verdad operativa. Si algo que necesitás no está en el repo, **no existe**: preguntá, no inventes.
 
@@ -53,7 +53,7 @@ Dirección permitida: `app → server → domain`, `server → db`. **`domain` n
 ## 5. Flujo de trabajo (Harness)
 1. **Spec primero**: no se escribe código de un UC sin `docs/specs/UC-xx.md` aprobado. Plantilla: `docs/specs/_TEMPLATE.md`.
 2. **Tests desde los criterios de aceptación**: cada criterio Dado/Cuando/Entonces → al menos un test, con el ID del UC y las RN en el nombre.
-3. **PRs pequeños**: un UC o sub-UC por PR, rama `uc/<id>-<slug>`.
+3. **PRs pequeños**: un UC o sub-UC por PR, rama `uc/<id>-<slug>`. Slices de infraestructura (p. ej. Slice 0): rama `slice-<n>/<bloque>`.
 4. **Roles de agente**: Planner → Implementer → Verifier (QA/E2E, intenta romper reglas) → Reviewer (contexto limpio). Ver `docs/adr/ADR-002-harness.md` cuando exista.
 5. **Definition of Done**: ver `.github/pull_request_template.md`.
 6. **Duda de negocio** → abrir pregunta en el PR / spec (sección "Preguntas abiertas") y detenerse en esa parte. No asumir.

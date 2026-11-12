@@ -1,4 +1,4 @@
-# GYM MVP
+# gym-app
 
 Plataforma web de gestión para un gimnasio: grilla de clases, cupos, reservas de alumnos y seguimiento de planes/vencimientos.
 
