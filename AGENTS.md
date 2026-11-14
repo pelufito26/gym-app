@@ -1,4 +1,4 @@
-# AGENTS.md — guía operativa para agentes (GYM MVP)
+# AGENTS.md — guía operativa para agentes (gym-app)
 
 Este archivo es la fuente de verdad operativa. Si algo que necesitás no está en el repo, **no existe**: preguntá, no inventes.
 
@@ -34,7 +34,8 @@ src/domain/   reglas de negocio PURAS (sin framework, sin BD, sin fechas "ahora"
 src/server/   servicios/casos de uso, repositorios, auth. Orquesta domain + db en transacciones.
 src/app/      rutas y UI (admin/, alumno/). Sin reglas de negocio.
 src/db/       esquema y migraciones.
-tests/        unit · integration (Postgres real) · e2e (Playwright)
+src/components/, src/lib/   UI compartida (shadcn/ui) y utilidades de presentación; cuentan como capa `app`.
+tests/        unit · integration (Postgres real, base `*_test`) · e2e (Playwright)
 ```
 Dirección permitida: `app → server → domain`, `server → db`. **`domain` no importa de nada fuera de sí mismo.** Hay una regla de lint que lo verifica.
 
@@ -53,7 +54,7 @@ Dirección permitida: `app → server → domain`, `server → db`. **`domain` n
 ## 5. Flujo de trabajo (Harness)
 1. **Spec primero**: no se escribe código de un UC sin `docs/specs/UC-xx.md` aprobado. Plantilla: `docs/specs/_TEMPLATE.md`.
 2. **Tests desde los criterios de aceptación**: cada criterio Dado/Cuando/Entonces → al menos un test, con el ID del UC y las RN en el nombre.
-3. **PRs pequeños**: un UC o sub-UC por PR, rama `uc/<id>-<slug>`.
+3. **PRs pequeños**: un UC o sub-UC por PR, rama `uc/<id>-<slug>`. Slices de infraestructura (p. ej. Slice 0): rama `slice-<n>/<bloque>`.
 4. **Roles de agente**: Planner → Implementer → Verifier (QA/E2E, intenta romper reglas) → Reviewer (contexto limpio). Ver `docs/adr/ADR-002-harness.md` cuando exista.
 5. **Definition of Done**: ver `.github/pull_request_template.md`.
 6. **Duda de negocio** → abrir pregunta en el PR / spec (sección "Preguntas abiertas") y detenerse en esa parte. No asumir.
@@ -62,5 +63,16 @@ Dirección permitida: `app → server → domain`, `server → db`. **`domain` n
 ## 6. Convenciones
 - TypeScript estricto. Zod en los bordes (formularios, acciones del servidor). Errores de dominio tipados (`Result` / clases de error con `code`).
 - Nombres de código en inglés; UI en español.
-- Commits: `tipo(UC-xx): descripción` (feat, fix, test, docs, refactor, chore).
+- Commits: `tipo(UC-xx): descripción` (feat, fix, test, docs, refactor, chore). Para slices de infraestructura el scope es `SLICE-n` (ej. `chore(SLICE-0): ...`).
+- Tests de integración usan `TEST_DATABASE_URL` (base cuyo nombre contiene `test`), nunca la base de desarrollo.
 - Tests de reglas de tiempo (corte de 10 min, vencimiento) usan reloj inyectado, nunca `Date.now()` directo.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

@@ -1,10 +1,22 @@
-# GYM MVP
+# gym-app
 
 Plataforma web de gestión para un gimnasio: grilla de clases, cupos, reservas de alumnos y seguimiento de planes/vencimientos.
 
 - Disciplinas iniciales: Entrenamiento funcional, Spinning, Híbrido, Entrenamiento personalizado.
 - Roles: Admin/Profe y Alumno.
 - Stack: Next.js (App Router) + TypeScript · PostgreSQL · Drizzle · Auth.js · Zod · Tailwind/shadcn · Vitest + Playwright (ver `docs/adr/ADR-001-stack.md`).
+
+## Primeros pasos (desarrollo local)
+Requisitos: Node 22 (`.nvmrc`) y Docker Desktop.
+```bash
+npm install
+cp .env.example .env          # y completar AUTH_SECRET (el comando está en el archivo)
+docker compose up -d          # Postgres 16 local: gym_dev + gym_test
+npm run db:migrate && npm run db:seed
+npm run dev                   # http://localhost:3000
+```
+Verificación completa: `npm run lint && npm run typecheck && npm test && npm run test:int && npm run build`.
+E2E: `npx playwright install chromium` (una vez) y `npm run test:e2e`.
 
 ## Cómo se trabaja acá
 Este repo se desarrolla con agentes dentro de un arnés (Harness Engineering). Leer en este orden:

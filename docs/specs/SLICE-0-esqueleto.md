@@ -11,7 +11,7 @@ Dejar un proyecto que corre, se testea y se despliega, con login por rol y las p
 1. **Scaffold**: Next.js (App Router) + TypeScript estricto + Tailwind + shadcn/ui. Los scripts de `AGENTS.md §2b` deben existir y funcionar: `dev`, `lint`, `typecheck`, `test`, `test:int`, `test:e2e`, `build`, `db:migrate`, `db:seed`.
 2. **Capas**: crear `src/domain`, `src/server`, `src/app`, `src/db`. Regla de lint (p. ej. `eslint-plugin-boundaries` o `no-restricted-imports`) que prohíbe a `domain` importar de otras capas; verificar que **falla** si se viola (test de la regla).
 3. **Base de datos**: Drizzle + Postgres (docker-compose para desarrollo). Migración inicial con `settings` (singleton), `user`, `student_profile`, `audit_log`.
-4. **Auth**: Auth.js con credenciales; hash argon2/bcrypt; roles `ADMIN`/`STUDENT`; helper de servidor `requireRole(role)`; middleware de rutas `/admin/*` y `/alumno/*`. Seed: un admin inicial vía variables de entorno.
+4. **Auth**: Auth.js con credenciales; hash argon2/bcrypt; roles `ADMIN`/`STUDENT`; helper de servidor `requireRole(role)`; protección de rutas `/admin/*` y `/alumno/*` con `src/proxy.ts` (en Next 16 `middleware` está deprecado y se llama `proxy`; ver `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/proxy.md`). El proxy es una primera barrera: la verificación que manda es `requireRole` en el servidor (AGENTS.md §4.3). Seed: un admin inicial vía variables de entorno.
 5. **Reloj inyectable**: `Clock` en `domain/` y su implementación real/fake para tests (prohibido `Date.now()` directo en reglas).
 6. **CI**: el workflow `.github/workflows/ci.yml` debe pasar en una PR de prueba.
 7. **Páginas mínimas**: `/login`, `/admin` (placeholder), `/alumno` (placeholder).
@@ -27,6 +27,9 @@ Dejar un proyecto que corre, se testea y se despliega, con login por rol y las p
 
 ## Fuera de alcance
 Alta de alumnos (UC-A09), cambio de contraseña (UC-AUTH02), cualquier ABM.
+
+## Notas técnicas
+- `next.config.ts` activa `cacheComponents` y `partialPrefetching` (default de create-next-app 16.4). Consecuencia para el bloque de auth: leer la sesión (cookies) es dato dinámico, así que la UI autenticada de `/admin` y `/alumno` tiene que ir dentro de `<Suspense>`. Revisar `node_modules/next/dist/docs/` antes de implementar.
 
 ## Preguntas abiertas
 - Proveedor de Postgres/hosting (decisión I) — no bloquea el desarrollo local.

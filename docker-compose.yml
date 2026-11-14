@@ -1,0 +1,22 @@
+# Postgres local para desarrollo (gym_dev) y tests de integración (gym_test).
+# Uso: docker compose up -d   (credenciales iguales a .env.example y al CI)
+# Solo escucha en 127.0.0.1: no queda expuesto a la red local.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: gym
+      POSTGRES_PASSWORD: gym
+      POSTGRES_DB: gym_dev
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - gym-db:/var/lib/postgresql/data
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gym -d gym_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  gym-db:
