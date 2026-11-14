@@ -6,6 +6,18 @@ Plataforma web de gestión para un gimnasio: grilla de clases, cupos, reservas d
 - Roles: Admin/Profe y Alumno.
 - Stack: Next.js (App Router) + TypeScript · PostgreSQL · Drizzle · Auth.js · Zod · Tailwind/shadcn · Vitest + Playwright (ver `docs/adr/ADR-001-stack.md`).
 
+## Primeros pasos (desarrollo local)
+Requisitos: Node 22 (`.nvmrc`) y Docker Desktop.
+```bash
+npm install
+cp .env.example .env
+docker compose up -d          # Postgres 16 local
+npm run db:migrate && npm run db:seed
+npm run dev                   # http://localhost:3000
+```
+Verificación completa: `npm run lint && npm run typecheck && npm test && npm run test:int && npm run build`.
+E2E: `npx playwright install chromium` (una vez) y `npm run test:e2e`.
+
 ## Cómo se trabaja acá
 Este repo se desarrolla con agentes dentro de un arnés (Harness Engineering). Leer en este orden:
 1. `AGENTS.md` — reglas operativas.
