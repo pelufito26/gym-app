@@ -34,7 +34,8 @@ src/domain/   reglas de negocio PURAS (sin framework, sin BD, sin fechas "ahora"
 src/server/   servicios/casos de uso, repositorios, auth. Orquesta domain + db en transacciones.
 src/app/      rutas y UI (admin/, alumno/). Sin reglas de negocio.
 src/db/       esquema y migraciones.
-tests/        unit · integration (Postgres real) · e2e (Playwright)
+src/components/, src/lib/   UI compartida (shadcn/ui) y utilidades de presentación; cuentan como capa `app`.
+tests/        unit · integration (Postgres real, base `*_test`) · e2e (Playwright)
 ```
 Dirección permitida: `app → server → domain`, `server → db`. **`domain` no importa de nada fuera de sí mismo.** Hay una regla de lint que lo verifica.
 
@@ -62,7 +63,8 @@ Dirección permitida: `app → server → domain`, `server → db`. **`domain` n
 ## 6. Convenciones
 - TypeScript estricto. Zod en los bordes (formularios, acciones del servidor). Errores de dominio tipados (`Result` / clases de error con `code`).
 - Nombres de código en inglés; UI en español.
-- Commits: `tipo(UC-xx): descripción` (feat, fix, test, docs, refactor, chore).
+- Commits: `tipo(UC-xx): descripción` (feat, fix, test, docs, refactor, chore). Para slices de infraestructura el scope es `SLICE-n` (ej. `chore(SLICE-0): ...`).
+- Tests de integración usan `TEST_DATABASE_URL` (base cuyo nombre contiene `test`), nunca la base de desarrollo.
 - Tests de reglas de tiempo (corte de 10 min, vencimiento) usan reloj inyectado, nunca `Date.now()` directo.
 
 <!-- BEGIN:nextjs-agent-rules -->

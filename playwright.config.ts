@@ -22,8 +22,9 @@ export default defineConfig({
     { name: "desktop-chromium", use: { ...devices["Desktop Chrome"] } },
   ],
   webServer: {
-    // En CI se prueba el build de producción; en local, el servidor de desarrollo.
-    command: isCI ? "npm run build && npm run start" : "npm run dev",
+    // En CI se prueba el build de producción (el workflow corre `npm run build` antes,
+    // en un paso propio, para que un error de build se vea como tal); en local, `next dev`.
+    command: isCI ? "npm run start" : "npm run dev",
     url: baseURL,
     reuseExistingServer: !isCI,
     timeout: 180_000,

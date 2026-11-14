@@ -1,10 +1,10 @@
 import postgres from "postgres";
 import { afterAll, describe, expect, it } from "vitest";
-import { requireDatabaseUrl } from "@/db/env";
+import { requireTestDatabaseUrl } from "@/db/env";
 
-// Humo del bloque 1: hay un Postgres real alcanzable con DATABASE_URL.
+// Humo del bloque 1: hay un Postgres real alcanzable en la base de test.
 // No se saltea si falta la base: en CI tiene que fallar, no pasar en silencio.
-const sql = postgres(requireDatabaseUrl(), { max: 1, onnotice: () => {} });
+const sql = postgres(requireTestDatabaseUrl(), { max: 1, onnotice: () => {} });
 
 afterAll(async () => {
   await sql.end();

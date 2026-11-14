@@ -10,8 +10,8 @@ Plataforma web de gestión para un gimnasio: grilla de clases, cupos, reservas d
 Requisitos: Node 22 (`.nvmrc`) y Docker Desktop.
 ```bash
 npm install
-cp .env.example .env
-docker compose up -d          # Postgres 16 local
+cp .env.example .env          # y completar AUTH_SECRET (el comando está en el archivo)
+docker compose up -d          # Postgres 16 local: gym_dev + gym_test
 npm run db:migrate && npm run db:seed
 npm run dev                   # http://localhost:3000
 ```
